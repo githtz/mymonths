@@ -161,3 +161,39 @@ minetest.register_globalstep(function(dtime)
 		end
 	end
 end)
+
+-- Get biased localtime
+function mymonths.get_timeofday()
+        local dc = tonumber(mymonths.day_counter)
+        local mc = tonumber(mymonths.month_counter)
+        local x = ((mc-1)*14)+dc
+        -- Small changes in ratio calculation for better results
+        local ratio = ((math.cos((x / 168.0) * 2.0 * math.pi) * 0.4) / 2.0) + 0.5
+        -- Create simplified nightratio and dayratio
+	local nightratio = ratio + 0.5
+        local dayratio =  1 / (ratio + 0.5)
+        
+        local timeofday = minetest.get_timeofday();
+        -- Specific calculation for time ranges
+        -- Until dawn
+        if timeofday < 0.25 then
+                timeofday = timeofday * nightratio
+        -- While the sun shines
+        elseif timeofday < 0.75 then
+                timeofday = timeofday - 0.5
+                timeofday = timeofday * dayratio
+                timeofday = timeofday + 0.5
+        -- Dusk and later
+        else
+            	timeofday = 1 - ( (1 - timeofday) * nightratio)
+        end
+        -- Bias the time towards the end of the day
+        timeofday = timeofday + 0.04
+        -- Make sure the value is still in bounds
+        if timeofday >= 1 then
+                timeofday = 0
+        end
+
+        return timeofday
+end
+
