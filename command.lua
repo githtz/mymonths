@@ -206,7 +206,7 @@ minetest.register_chatcommand("date", {
 
 	func = function(name, param)
 
-		local t = tostring(minetest.get_timeofday() * 2400)
+		local t = tostring(mymonths.get_timeofday() * 2400)
 		local tt = string.find(t, "%p",1)
 
 		tt = tt or "0" -- if nil then force value
