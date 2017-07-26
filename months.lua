@@ -1,6 +1,13 @@
 local timechange = 0
 local gm = 0
 local gn = 0
+local restoreTimescale = false
+local emptyServerTimescale = 6 -- 4 ingame days per real day
+
+-- If exists read emptyServerTimescale from config and store locally to prevent outside modification
+if mymonths.emptyServerTimescale ~= nil then
+	emptyServerTimescale = mymonths.emptyServerTimescale
+end
 
 -- Set holidays
 local hol = {
