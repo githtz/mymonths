@@ -54,7 +54,6 @@ local mon = {
 local timer = 0
 
 minetest.register_globalstep(function(dtime)
-
 	-- Checks every X seconds
 	timer = timer + dtime
 
@@ -156,6 +155,26 @@ minetest.register_globalstep(function(dtime)
 		minetest.setting_set("time_speed", nightratio)
 
 		gn = 0
+	end
+	
+	-- Slowdown time when server is empty
+	if hasPlayers == false
+	and restoreTimescale == false then
+		minetest.log("info", "[mymonths] No players on server, switching to emptyServerTimescale: "..emptyServerTimescale)
+		minetest.setting_set("time_speed", emptyServerTimescale)
+		restoreTimescale = true
+	elseif hasPlayers == true
+	and restoreTimescale == true then
+		restoreTimescale = false
+		local restoreValue = 0
+		if time_in_seconds >= 6000
+		and time_in_seconds <= 18000 then
+			restoreValue = dayratio
+		else
+			restoreValue = nightratio
+		end
+		minetest.log("info", "[mymonths] There are now players on server, switching to stored timescale: "..restoreValue)
+		minetest.setting_set("time_speed", restoreValue)
 	end
 
 	-- Set the name of the day
