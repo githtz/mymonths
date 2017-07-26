@@ -57,6 +57,8 @@ minetest.register_globalstep(function(dtime)
 	end
 
 	timer = 0
+	
+	local hasPlayers = #minetest.get_connected_players() > 0
 
 --Day Night Speeds (Thanks to sofar for this)
 	local dc = tonumber(mymonths.day_counter)
