@@ -108,6 +108,7 @@ minetest.register_globalstep(function(dtime)
 	-- Sets time speed in the morning
 	if time_in_seconds >= 6000
 	and time_in_seconds <= 12000
+	and hasPlayers
 	and gm == 1 then
 		minetest.setting_set("time_speed", dayratio)
 		minetest.chat_send_all("Good Morning! It is "..mymonths.day_name.." "..mymonths.month.." "..mymonths.day_counter)
@@ -149,6 +150,7 @@ minetest.register_globalstep(function(dtime)
 
 	if time_in_seconds >= 22000
 	and time_in_seconds <= 24000
+	and hasPlayers
 	and gn == 1 then
 
 		minetest.setting_set("time_speed", nightratio)
